@@ -1,0 +1,364 @@
+.bug-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  user-select: none;
+}
+
+.bug-popup-body {
+  margin-top: 1em; /* ensure consistent spacing under header */
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.bug-popup-container {
+  position: relative; 
+  background: #fff;
+  border-radius: 8px;
+  padding: 1em;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  font-family: 'Poppins', sans-serif;
+  user-select: none;
+  box-sizing: border-box;
+  display: flex;        
+  flex-direction: column;  
+}
+
+.bug-popup-container.dark {
+  background-color: #1f1f1f;
+  color: white;
+}
+
+.bug-popup-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 1em;
+  padding: 0.5em;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  resize: none;
+  font-family: inherit;
+  margin-top: 1em;
+}
+
+.bug-popup-textarea.dark {
+  background-color: #2c2c2c;
+  color: white;
+  border: 1px solid #555;
+
+}
+
+.bug-popup-textarea:focus, .bug-popup-textarea.dark:focus {
+    border: #4366b1 1px solid;
+    outline: none;
+}
+
+/* Screenshot button */
+.bug-popup-screenshot-btn {
+  background-color: #4366b1;
+  color: white;
+  border: none;
+  padding: 0.5em 1em;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 1em;
+}
+
+.bug-popup-screenshot-btn:disabled{
+  background-color: #aaa;
+  cursor: default;
+  opacity: 0.6;
+}
+
+.bug-popup-submit:not(:disabled):hover,
+.bug-popup-screenshot-btn:not(:disabled):hover {
+  filter: brightness(110%);
+}
+
+.bug-popup-preview-label {
+  font-size: 0.85em;
+}
+
+.bug-popup-buttons {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1.5em;
+  gap: 0.5em;
+}
+
+.bug-popup-submit {
+  background-color: #4366b1;
+  color: white;
+  border: none;
+  padding: 0.5em 1em;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.bug-popup-submit:disabled {
+  background-color: #aaa;
+  cursor: default;
+  opacity: 0.6;
+}
+
+.bug-popup-submit.dark:disabled {
+  background-color: #aaa;
+  cursor: default;
+  opacity: 0.6;
+}
+
+
+.bug-popup-submit[data-tip] {
+  position: relative;
+}
+
+.bug-popup-submit::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: 120%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #aaa;
+  color: white;
+  padding: 2px 5px;
+  border-radius: 4px;
+  font-size: 0.75em;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+  z-index: 10;
+}
+
+.bug-popup-submit:disabled:hover::after {
+  opacity: 1;
+}
+
+
+.bug-popup-container.dark .bug-popup-submit:disabled {
+  background-color: #aaa;
+  color: white;
+}
+
+
+
+/* Preview Image */
+.bug-popup-preview-img {
+  max-width: 100%;
+  height: 200px;
+  cursor: zoom-in;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.bug-popup-placeholder-img {
+  width: 370px;
+  height: 200px;
+  border: 1px dashed #aaa;
+  border-radius: 4px;
+  background-color: transparent;
+  opacity: 0.5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+/* Enlarged fullscreen image */
+.bug-popup-fullscreen {
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 3000;
+}
+
+.bug-popup-fullscreen img {
+  max-width: 90%;
+  max-height: 90%;
+  border: 4px solid white;
+  border-radius: 8px;
+  box-shadow: 0 0 20px black;
+  cursor: zoom-out;
+}
+.bug-popup-close {
+  width: 28px;
+  height: 28px;
+  background: transparent;
+  border: none;
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #696969;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.header-text {
+    font-size: 1.2em;
+    /* font-weight: 600; */
+}
+
+.bug-header-popup-close-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* add this */
+  width: 100%;
+  /* border-bottom: #c7c7c7 1px solid; */
+}
+
+.bug-popup-close:hover {
+  background-color: #eeeeee;
+}
+
+.bug-popup-container.dark .bug-popup-close {
+  color: #ddd;
+  border-color: #666;
+}
+
+.bug-popup-container.dark .bug-popup-close:hover {
+  background-color: #444;
+}
+
+.bug-popup-screenshot-container {
+  text-align: center;
+}
+
+.bug-popup-image-wrapper {
+  position: relative;
+  display: inline-block;
+  user-select: none;
+  margin-top: 1em;
+}
+
+.bug-popup-delete-x {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background-color: #f3f3f3;
+  color: gray;
+  border: 1px solid gray;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  font-size: 1em;
+  cursor: pointer;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.bug-popup-delete-x:hover {
+  filter:brightness(90%)
+}
+
+.screenshot-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  margin-top: 1em;
+  font-size: 0.95em;
+  cursor: pointer;
+}
+
+.screenshot-toggle input {
+  display: none;
+}
+
+.screenshot-toggle .slider {
+  width: 40px;
+  height: 20px;
+  background-color: #ccc;
+  border-radius: 999px;
+  position: relative;
+  transition: background-color 0.2s ease;
+}
+
+.screenshot-toggle .slider::before {
+  content: "";
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  background: white;
+  border-radius: 50%;
+  top: 2px;
+  left: 2px;
+  transition: transform 0.2s ease;
+}
+
+.screenshot-toggle input:checked + .slider {
+  background-color: #486fc4;
+}
+
+.screenshot-toggle input:checked + .slider::before {
+  transform: translateX(20px);
+}
+
+.screenshot-toggle .label-text {
+  user-select: none;
+}
+
+.tooltip-wrapper {
+  position: relative;
+  display: flex;         
+  justify-content: flex-end;
+  flex: 1;            
+}
+
+.submit-confirmation {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: inherit; 
+  padding: 1em;
+  text-align: center;
+}
+
+.confirmation-check {
+  width: 64px;
+  height: 64px;
+  margin-bottom: 1em;
+  user-select: none;
+  
+}
+
+.confirmation-title {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #32ba7c;
+  margin-bottom: 0.5em;
+}
+
+.confirmation-message {
+  font-size: 0.95em;
+  color: #555;
+  margin-bottom: 0.5em;
+
+}
+
+.confirmation-message.dark {
+  font-size: 0.95em;
+  color: white;
+  margin-bottom: 0.5em;
+
+}

@@ -1,0 +1,86 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+body {
+  font-family: 'Poppins', sans-serif;
+}
+
+
+.junebug-icon-button {
+  width: 2.5em;
+  height: 2.5em;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-drag: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  transition: transform 0.2s ease;
+  z-index: 999;
+  position: fixed;
+}
+
+.junebug-icon-button:active {
+  cursor: grabbing;
+}
+
+.junebug-icon-wrapper {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.junebug-tooltip {
+  position: absolute;
+  bottom: calc(100% + 0.5em); /* place above the icon */
+  right: 0;                   /* align to right edge of icon */
+  background-color: #333;
+  color: white;
+  padding: 0.4em 0.8em;
+  border-radius: 1em;
+  font-size: 0.75em;
+  font-family: 'Poppins', sans-serif;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+.junebug-icon-wrapper:hover .junebug-tooltip {
+  opacity: 1;
+}
+.junebug-tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  right: 1em;
+  border-width: 6px;
+  border-style: solid;
+  border-color: #333 transparent transparent transparent;
+}
+
+.junebug-close-btn {
+  position: absolute;
+  top: -10px;
+  right: -25px;
+  background-color: #ccc;
+  color: #333;
+  border: none;
+  border-radius: 50%;
+  width: 15px;
+  height: 15px;
+  font-size: 0.6em;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Poppins', sans-serif;
+  z-index: 1000;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.4);
+  transition: background-color 0.2s;
+}
+
+.junebug-close-btn:hover {
+  background-color: #999;
+}

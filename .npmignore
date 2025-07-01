@@ -1,0 +1,6 @@
+demo/
+vite.config.*
+tsconfig.json
+*.tsx
+*.ts
+src/
