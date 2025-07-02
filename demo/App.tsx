@@ -9,6 +9,7 @@ const App = () => {
         // appName="JuneBug Demo"
         supportInbox="your@email.com"
         iconOffset={{x: 150, y: 150}}
+        darkMode={true}
         // subjectPrefix="Testing JuneBug"
         // userInfo={{ fullName: "Your Name", shortName: "your?", otherInfo: "cool!" }}
       />
