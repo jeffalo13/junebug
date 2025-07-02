@@ -121,6 +121,7 @@ export const JuneBug: React.FC<JuneBugProps> = ({
 
   const handleTouchStart = (e: React.TouchEvent) => {
   // Only use the first touch
+  e.preventDefault();
   const touch = e.touches[0];
   dragStartMouse.current = { x: touch.clientX, y: touch.clientY };
   dragStartOffset.current = offsetFromCorner;
