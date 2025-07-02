@@ -4,3 +4,4 @@ tsconfig.json
 *.tsx
 *.ts
 src/
+assets/images/*-preview.png

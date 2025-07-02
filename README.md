@@ -25,13 +25,13 @@ I created this with the hope that more people would actually report issues rathe
 
 **Light Mode:**  
 ![JuneBug Icon Preview Light Mode](https://github.com/jeffalo13/junebug/blob/main/assets/images/JuneBugIcon.png)
-![JuneBug Popup Preview Light Mode](https://github.com/jeffalo13/junebug/blob/main/assets/images/user-popup-input-light.png)
-![JuneBug Confirmation Preview Light Mode](https://github.com/jeffalo13/junebug/blob/main/assets/images/bug-submitted-light.png)
+![JuneBug Popup Preview Light Mode](https://github.com/jeffalo13/junebug/blob/main/assets/images/user-popup-input-light-preview.png)
+![JuneBug Confirmation Preview Light Mode](https://github.com/jeffalo13/junebug/blob/main/assets/images/bug-submitted-light-preview.png)
 
 **Dark Mode:**  
 ![JuneBug Icon Preview Dark Mode](https://github.com/jeffalo13/junebug/blob/main/assets/images/JuneBugIconDarkMode.png)
-![JuneBug Popup Preview Dark Mode](https://github.com/jeffalo13/junebug/blob/main/assets/images/user-popup-input-dark.png)
-![JuneBug Confirmation Preview Dark Mode](https://github.com/jeffalo13/junebug/blob/main/assets/images/bug-submitted-dark.png)
+![JuneBug Popup Preview Dark Mode](https://github.com/jeffalo13/junebug/blob/main/assets/images/user-popup-input-dark-preview.png)
+![JuneBug Confirmation Preview Dark Mode](https://github.com/jeffalo13/junebug/blob/main/assets/images/bug-submitted-dark-preview.png)
 
 ---
 
