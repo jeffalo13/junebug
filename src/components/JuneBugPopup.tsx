@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import html2canvas from "html2canvas";
-import checkmark from "../images/JuneBugCheckmark.png";
-import "./styles/JuneBugPopup.css";
+import checkmark from "../../assets/images/JuneBugCheckmark.png";
+import "../../assets/styles/JuneBugPopup.css";
 // import { getCapturedLogs } from './ConsoleCapture';
 
 interface BugPopupProps {
@@ -33,6 +33,22 @@ export const JuneBugPopUp: React.FC<BugPopupProps> = ({
   // const [countdown, setCountdown] = useState(5);
 
   const offset = useRef({ x: 0, y: 0 });
+
+      function addBase64Prefix(base64: string): string {
+  if (base64.startsWith('data:image')) return base64;
+  
+  // Check if localStorage flag "localDev" is set
+  let isLocalDev = false;
+  try {
+    isLocalDev = localStorage.getItem('juneBugDemoAppFlag') === 'true';
+  } catch {
+    // localStorage may be unavailable in some contexts, fail gracefully
+  }
+  
+  // Add prefix only if NOT local dev
+  return isLocalDev ? base64 : `data:image/png;base64,${base64}`;
+}
+  const checkMarkIcon = addBase64Prefix(checkmark);
 
   const popupWidth = 400;
   const popupHeightDefault = 300;
@@ -176,7 +192,16 @@ export const JuneBugPopUp: React.FC<BugPopupProps> = ({
   const takeScreenshot = async () => {
     // await new Promise((resolve) => setTimeout(resolve, 2000))
     await new Promise((resolve) => requestAnimationFrame(resolve));
-    const canvas = await html2canvas(document.body, { logging: false });
+    const canvas = await html2canvas(document.documentElement, {
+      logging: false,
+      width: window.innerWidth,
+      height: window.innerHeight,
+      x: window.scrollX,
+      y: window.scrollY,
+      scale: window.devicePixelRatio,
+      scrollX: 0,
+      scrollY: 0,
+    });
     const dataUrl = canvas.toDataURL("image/png");
     setScreenshot(dataUrl);
   };
@@ -241,7 +266,7 @@ return (
       <div className="bug-popup-body">
         {submitted ? (
           <div className="submit-confirmation">
-            <img src={checkmark} alt="Success" className="confirmation-check" draggable={false} />
+            <img src={checkMarkIcon} alt="Success" className="confirmation-check" draggable={false} />
             <div className="confirmation-title">Report Received</div>
             <div className={confirmationMessageClass}>
               We are working to fix your issue.

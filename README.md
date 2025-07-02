@@ -21,6 +21,19 @@ I created this with the hope that more people would actually report issues rathe
 
 ---
 
+### Previews
+
+**Bug Icon:**  
+![JuneBug Icon Preview](https://github.com/jeffalo13/junebug/raw/main/assets/junebug-icon.png)
+
+**User Submission Form:**  
+![JuneBug User Form Preview](https://github.com/jeffalo13/junebug/raw/main/assets/junebug-form.png)
+
+**Post-Submit Confirmation:**  
+![JuneBug Confirmation Preview](https://github.com/jeffalo13/junebug/raw/main/assets/junebug-confirmation.png)
+
+---
+
 ### Installation
 
 ```bash

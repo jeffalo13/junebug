@@ -8,7 +8,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 2000;
+  z-index: 2147483647;
   user-select: none;
 }
 
@@ -32,6 +32,7 @@
   box-sizing: border-box;
   display: flex;        
   flex-direction: column;  
+  /* z-index: 2147483647; */
 }
 
 .bug-popup-container.dark {
@@ -104,6 +105,7 @@
   border-radius: 4px;
   cursor: pointer;
   font-family: inherit;
+  width: auto;
 }
 
 .bug-popup-submit:disabled {
@@ -186,7 +188,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 3000;
+  z-index: 6901;
 }
 
 .bug-popup-fullscreen img {

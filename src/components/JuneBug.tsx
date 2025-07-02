@@ -1,18 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
-import lightModeIcon from "../images/JuneBugIcon.png";
-import darkModeIcon from "../images/JuneBugIconDarkMode.png";
-import checkmark from "../images/JuneBugCheckmark.png";
+import lightModeIcon from "../../assets/images/JuneBugIcon.png";
+import darkModeIcon from "../../assets/images/JuneBugIconDarkMode.png";
+import checkmark from "../../assets/images/JuneBugCheckmark.png";
 import { JuneBugPopUp } from "./JuneBugPopup";
 import { SendEmailOptions, sendEmailReport } from "./JuneBugEmailer";
-import "./styles/JuneBug.css";
+import "../../assets/styles/JuneBug.css";
 import { prettyPrintLogsForEmail, getCapturedLogs } from "../utils/ConsoleCapture";
-
-const preloadImage = (src: string) => {
-  const img = new Image();
-  img.src = src;
-};
-
-preloadImage(checkmark);
 
 export interface JuneBugProps {
   /** Optional custom image for the bug icon */
@@ -48,6 +41,9 @@ export interface JuneBugProps {
   /** Custom object logs to be written to  customLog.txt file.  Any object passed will be iterated thru for each field and displayed as JSON in the file. */
   customLogObject?: any
 
+  /** Override offset for position of JuneBug icon from bottom-right of screen (in px). Default is { x: 45, y: 65 } */
+  iconOffset?: { x: number; y: number };
+
   /** Custom user function to call after submit clicked */
   onSubmit?: (message: string, screenshotData?: string | null) => void;
 
@@ -67,12 +63,13 @@ export const JuneBug: React.FC<JuneBugProps> = ({
   disableEmailer = false,
   disableConsoleLogs = false,
   visible = true,
+  iconOffset,
   onSubmit,
   sendEmailOverrideFunction,
-  
+
 }) => {
   const iconSize = 40; // px
-  const defaultOffset = { x: 45, y: 65 }; // distance from bottom/right edges
+  const defaultOffset = iconOffset ?? { x: 45, y: 65 }; // distance from bottom/right edges
 
   const toolTipDefault = "Having trouble? Drag me to your issue!"
   // const toolTipDefault = "Drag me to your problem!"
@@ -92,7 +89,24 @@ export const JuneBug: React.FC<JuneBugProps> = ({
 
   const iconRef = useRef<HTMLImageElement | null>(null);
 
-  const iconSrc = customIcon || (darkMode ? darkModeIcon : lightModeIcon);
+  // const iconSrc = customIcon || (darkMode ? darkModeIcon : lightModeIcon);
+
+  function addBase64Prefix(base64: string): string {
+    if (base64.startsWith('data:image')) return base64;
+
+    // Check if localStorage flag "localDev" is set
+    let isLocalDev = false;
+    try {
+      isLocalDev = localStorage.getItem('juneBugDemoAppFlag') === 'true';
+    } catch {
+      // localStorage may be unavailable in some contexts, fail gracefully
+    }
+
+    // Add prefix only if NOT local dev
+    return isLocalDev ? base64 : `data:image/png;base64,${base64}`;
+  }
+
+  const iconSrc = customIcon ? customIcon : darkMode ? addBase64Prefix(darkModeIcon) : addBase64Prefix(lightModeIcon);
 
   const handleMouseDown = (e: React.MouseEvent) => {
     dragStartMouse.current = { x: e.clientX, y: e.clientY };
@@ -109,8 +123,8 @@ export const JuneBug: React.FC<JuneBugProps> = ({
       const deltaX = e.clientX - dragStartMouse.current.x;
       const deltaY = e.clientY - dragStartMouse.current.y;
 
-      const newX = dragStartOffset.current.x - deltaX; 
-      const newY = dragStartOffset.current.y - deltaY; 
+      const newX = dragStartOffset.current.x - deltaX;
+      const newY = dragStartOffset.current.y - deltaY;
 
       setOffsetFromCorner({
         x: Math.max(0, newX),
@@ -147,34 +161,38 @@ export const JuneBug: React.FC<JuneBugProps> = ({
     }
   }, [showPopup]);
 
+  useEffect(() => {
+    if (iconOffset) setOffsetFromCorner(iconOffset);
+  }, [iconOffset]);
+
   const handleSubmit = async (message: string, screenshot?: string | null) => {
 
 
-  try {
+    try {
 
-  if (!supportInbox || disableEmailer) return;
+      if (!supportInbox || disableEmailer) return;
 
-  const logsRaw = !disableConsoleLogs ? getCapturedLogs().toArray() : undefined;
-  const formattedLogs = prettyPrintLogsForEmail(logsRaw);
+      const logsRaw = !disableConsoleLogs ? getCapturedLogs().toArray() : undefined;
+      const formattedLogs = prettyPrintLogsForEmail(logsRaw);
 
-    const rawEmail: SendEmailOptions = {
-      to: supportInbox,
-      message,
-      logs: formattedLogs,
-      screenshotBase64: screenshot,
-      reporter: userInfo,
-      appName,
-      subjectPrefix,
-      customLogObject
-    };
+      const rawEmail: SendEmailOptions = {
+        to: supportInbox,
+        message,
+        logs: formattedLogs,
+        screenshotBase64: screenshot,
+        reporter: userInfo,
+        appName,
+        subjectPrefix,
+        customLogObject
+      };
 
-    await sendEmailReport(rawEmail, sendEmailOverrideFunction);
-  } catch (err) {
-    console.error("Error sending bug report:", err);
-  } finally {
-    onSubmit?.(message, screenshot);
-  }
-};
+      await sendEmailReport(rawEmail, sendEmailOverrideFunction);
+    } catch (err) {
+      console.error("Error sending bug report:", err);
+    } finally {
+      onSubmit?.(message, screenshot);
+    }
+  };
 
 
 
@@ -187,16 +205,17 @@ export const JuneBug: React.FC<JuneBugProps> = ({
             position: "fixed",
             right: `${offsetFromCorner.x}px`,
             bottom: `${offsetFromCorner.y}px`,
-            zIndex: 999,
+            // zIndex: 999,
+            // zIndex 
           }}
-            onMouseEnter={() => setMouseHovering(true)}
-            onMouseLeave={() => setMouseHovering(false)}
+          onMouseEnter={() => setMouseHovering(true)}
+          onMouseLeave={() => setMouseHovering(false)}
         >
-          {!dragging && !showPopup && mouseHovering &&(          
-          <button
-            className="junebug-close-btn" 
-            onClick={() => setHidden(true)}
-            aria-label="Hide bug icon">×</button>)
+          {!dragging && !showPopup && mouseHovering && (
+            <button
+              className="junebug-close-btn"
+              onClick={() => setHidden(true)}
+              aria-label="Hide bug icon">×</button>)
           }
 
           <div className="junebug-tooltip">{toolTipText}</div>
@@ -217,14 +236,14 @@ export const JuneBug: React.FC<JuneBugProps> = ({
       )}
 
 
-            {showPopup && (
-              <JuneBugPopUp
-                onClose={() => setShowPopup(false)}
-                onSubmit={handleSubmit}
-                darkMode={darkMode}
-                triggerPosition={triggerPosition}
-              />
-            )}
-          </>
-        );
-      };
+      {showPopup && (
+        <JuneBugPopUp
+          onClose={() => setShowPopup(false)}
+          onSubmit={handleSubmit}
+          darkMode={darkMode}
+          triggerPosition={triggerPosition}
+        />
+      )}
+    </>
+  );
+};
