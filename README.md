@@ -23,15 +23,31 @@ I created this with the hope that more people would actually report issues rathe
 
 ### Previews
 
-**Light Mode:**  
-![JuneBug Icon Preview Light Mode](https://github.com/jeffalo13/junebug/blob/main/assets/images/JuneBugIcon.png)
-![JuneBug Popup Preview Light Mode](https://github.com/jeffalo13/junebug/blob/main/assets/images/user-popup-input-light-preview.png)
-![JuneBug Confirmation Preview Light Mode](https://github.com/jeffalo13/junebug/blob/main/assets/images/bug-submitted-light-preview.png)
+<table>
+  <tr>
+    <th>Light Mode</th>
+    <th>Dark Mode</th>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="https://github.com/jeffalo13/junebug/blob/main/assets/images/JuneBugIcon.png" width="50" style="vertical-align:middle;margin-right:8px;"/>
+      <img src="https://github.com/jeffalo13/junebug/blob/main/assets/images/user-popup-input-light-preview.png" width="250" style="vertical-align:middle;"/>
+    </td>
+    <td align="center">
+      <img src="https://github.com/jeffalo13/junebug/blob/main/assets/images/JuneBugIconDarkMode.png" width="50" style="vertical-align:middle;margin-right:8px;"/>
+      <img src="https://github.com/jeffalo13/junebug/blob/main/assets/images/user-popup-input-dark-preview.png" width="250" style="vertical-align:middle;"/>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="https://github.com/jeffalo13/junebug/blob/main/assets/images/bug-submitted-light-preview.png" width="250"/>
+    </td>
+    <td align="center">
+      <img src="https://github.com/jeffalo13/junebug/blob/main/assets/images/bug-submitted-dark-preview.png" width="250"/>
+    </td>
+  </tr>
+</table>
 
-**Dark Mode:**  
-![JuneBug Icon Preview Dark Mode](https://github.com/jeffalo13/junebug/blob/main/assets/images/JuneBugIconDarkMode.png)
-![JuneBug Popup Preview Dark Mode](https://github.com/jeffalo13/junebug/blob/main/assets/images/user-popup-input-dark-preview.png)
-![JuneBug Confirmation Preview Dark Mode](https://github.com/jeffalo13/junebug/blob/main/assets/images/bug-submitted-dark-preview.png)
 
 ---
 
