@@ -13,6 +13,7 @@ interface BugPopupProps {
   ) => void;
   darkMode?: boolean;
   triggerPosition?: { x: number; y: number } | null;
+  disableScreenshot?: boolean
 }
 
 export const JuneBugPopUp: React.FC<BugPopupProps> = ({
@@ -20,6 +21,7 @@ export const JuneBugPopUp: React.FC<BugPopupProps> = ({
   onSubmit,
   darkMode = false,
   triggerPosition,
+  disableScreenshot
 }) => {
   const popupRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
@@ -79,7 +81,7 @@ export const JuneBugPopUp: React.FC<BugPopupProps> = ({
 
   //take screenshot when popup opens automatically
   useEffect(() => {
-    takeScreenshot();
+    if (!disableScreenshot) {takeScreenshot();}
     textareaRef.current?.focus();
   }, []);
 
@@ -287,17 +289,19 @@ return (
               rows={4}
             />
 
-            <label className="screenshot-toggle">
-              <input
-                type="checkbox"
-                checked={screenshotAttached}
-                onChange={() => setScreenshotAttached(!screenshotAttached)}
-              />
-              <span className="slider" />
-              <span className="label-text">Attach Screenshot</span>
-            </label>
+            {!disableScreenshot && (
+              <label className="screenshot-toggle" >
+                <input
+                  type="checkbox"
+                  checked={screenshotAttached}
+                  onChange={() => setScreenshotAttached(!screenshotAttached)}
+                />
+                <span className="slider" />
+                <span className="label-text">Attach Screenshot</span>
+              </label>
+            )}
 
-            {screenshotAttached && (
+            {screenshotAttached && !disableScreenshot && (
               <div className="bug-popup-screenshot-container">
                 <div className="bug-popup-image-wrapper">
                   {screenshot ? (

@@ -8,7 +8,7 @@ import "../../assets/styles/JuneBug.css";
 import { prettyPrintLogsForEmail, getCapturedLogs } from "../utils/ConsoleCapture";
 
 export interface JuneBugProps {
-  /** Optional custom image for the bug icon */
+  /** Optional custom image for the bug icon in base64 string format */
   customIcon?: string;
 
   /** Alt text for the bug icon image */
@@ -17,8 +17,8 @@ export interface JuneBugProps {
   /** Enable dark mode styling */
   darkMode?: boolean;
 
-  /** User information to include in the report */
-  userInfo?: any;
+  /** Reporter information to include in the report */
+  reporterInfo?: any;
 
   /** Email address to send the report to */
   supportInbox?: string;
@@ -35,16 +35,19 @@ export interface JuneBugProps {
   /** Disables log attachment if true */
   disableConsoleLogs?: boolean;
 
-  /** If false, the component is not rendered. */
+  /** Disables screenshot functionality if true */
+  disableScreenshot?: boolean
+
+  /** Disables component if false */
   visible?: boolean
 
-  /** Custom object logs to be written to  customLog.txt file.  Any object passed will be iterated thru for each field and displayed as JSON in the file. */
+  /** Custom object logs to be written to customLog.txt file.  Any object passed will be iterated through for each field and displayed as JSON in the file. */
   customLogObject?: any
 
   /** Override offset for position of JuneBug icon from bottom-right of screen (in px). Default is { x: 45, y: 65 } */
   iconOffset?: { x: number; y: number };
 
-  /** Custom user function to call after submit clicked */
+  /** Custom function to call after submit clicked */
   onSubmit?: (message: string, screenshotData?: string | null) => void;
 
   /** Override the default email sending function */
@@ -56,12 +59,13 @@ export const JuneBug: React.FC<JuneBugProps> = ({
   iconAlt = "Bug Icon",
   darkMode = false,
   supportInbox,
-  userInfo,
+  reporterInfo,
   appName,
   subjectPrefix,
   customLogObject,
   disableEmailer = false,
   disableConsoleLogs = false,
+  disableScreenshot = false,
   visible = true,
   iconOffset,
   onSubmit,
@@ -115,6 +119,16 @@ export const JuneBug: React.FC<JuneBugProps> = ({
     setToolTipText(toolTipDragging)
   };
 
+  const handleTouchStart = (e: React.TouchEvent) => {
+  // Only use the first touch
+  const touch = e.touches[0];
+  dragStartMouse.current = { x: touch.clientX, y: touch.clientY };
+  dragStartOffset.current = offsetFromCorner;
+  setDragging(true);
+  setToolTipText(toolTipDragging);
+};
+
+
   useEffect(() => {
 
     const handleMouseMove = (e: MouseEvent) => {
@@ -141,11 +155,40 @@ export const JuneBug: React.FC<JuneBugProps> = ({
         setShowPopup(true);
       }
     };
-    document.addEventListener("mousemove", handleMouseMove);
-    document.addEventListener("mouseup", handleMouseUp);
+
+
+      // TOUCH EVENTS
+    const handleTouchMove = (e: TouchEvent) => {
+      if (!dragging) return;
+      const touch = e.touches[0];
+      const deltaX = touch.clientX - dragStartMouse.current.x;
+      const deltaY = touch.clientY - dragStartMouse.current.y;
+      const newX = dragStartOffset.current.x - deltaX;
+      const newY = dragStartOffset.current.y - deltaY;
+      setOffsetFromCorner({
+        x: Math.max(0, newX),
+        y: Math.max(0, newY),
+      });
+    };
+
+    const handleTouchEnd = (e: TouchEvent) => {
+      if (dragging) {
+        setDragging(false);
+        dragStarted.current = false;
+        // Use the last known position if needed
+        setShowPopup(true);
+      }
+    };
+
+  document.addEventListener("mousemove", handleMouseMove);
+  document.addEventListener("mouseup", handleMouseUp);
+  document.addEventListener("touchmove", handleTouchMove, { passive: false });
+  document.addEventListener("touchend", handleTouchEnd);
     return () => {
       document.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseup", handleMouseUp);
+      document.removeEventListener("touchmove", handleTouchMove);
+      document.removeEventListener("touchend", handleTouchEnd);
     };
   }, [dragging]);
 
@@ -180,7 +223,7 @@ export const JuneBug: React.FC<JuneBugProps> = ({
         message,
         logs: formattedLogs,
         screenshotBase64: screenshot,
-        reporter: userInfo,
+        reporter: reporterInfo,
         appName,
         subjectPrefix,
         customLogObject
@@ -225,6 +268,7 @@ export const JuneBug: React.FC<JuneBugProps> = ({
             alt={iconAlt}
             className="junebug-icon-button"
             onMouseDown={handleMouseDown}
+            onTouchStart={handleTouchStart}
             draggable={false}
             style={{
               width: `${iconSize}px`,
@@ -242,6 +286,7 @@ export const JuneBug: React.FC<JuneBugProps> = ({
           onSubmit={handleSubmit}
           darkMode={darkMode}
           triggerPosition={triggerPosition}
+          disableScreenshot={disableScreenshot}
         />
       )}
     </>
