@@ -16,7 +16,7 @@ I created this with the hope that more people would actually report issues rathe
 - 🐞 Draggable bug icon
 - 📸 Optional screenshot support (via `html2canvas`)
 - 📝 No form filling for the user - just a message
-- 📧 Emails reports directly to your support inbox. Out of the box, it sends emails through JuneBug’s AWS Lambda server, but this behavior can be overridden with a custom function.
+- 📧 Emails reports directly to your support inbox. Out of the box, it sends emails through JuneBug’s AWS Lambda server, but this behavior can be overridden with a custom function (sendEmailOverrideFunction prop).
 - 🌙 Light/dark mode support
 
 ---
@@ -48,59 +48,163 @@ I created this with the hope that more people would actually report issues rathe
   </tr>
 </table>
 
+---
+
 ### Props
 
-| Prop                         | Type                              | Default                  | Description                                                                 |
-|------------------------------|-----------------------------------|--------------------------|-----------------------------------------------------------------------------|
-| `customIcon`                 | `string`                          | `undefined`              | Custom image for the bug icon (base64 string or URL).                       |
-| `iconAlt`                    | `string`                          | `"Bug Icon"`             | Alt text for accessibility.                                                |
-| `darkMode`                   | `boolean`                         | `false`                  | Enables dark mode styling.                                                 |
-| `reporterInfo`              | `any`                             | `undefined`              | Object with extra info to include in the email (e.g. user ID, session ID). |
-| `supportInbox`              | `string`                          | `undefined`              | Email address to send bug reports to.                                      |
-| `appName`                    | `string`                          | `undefined`              | Application name (appears in the email subject).                           |
-| `subjectPrefix`             | `string`                          | `"JuneBug Report"`       | Custom prefix for the email subject.                                       |
-| `disableEmailer`            | `boolean`                         | `false`                  | If `true`, disables the email sending logic entirely.                      |
-| `disableConsoleLogs`        | `boolean`                         | `false`                  | If `true`, disables automatic log collection.                              |
-| `disableScreenshot`         | `boolean`                         | `false`                  | If `true`, disables screenshot functionality.                              |
-| `visible`                   | `boolean`                         | `true`                   | If `false`, completely hides the JuneBug component.                        |
-| `customLogObject`           | `any`                             | `undefined`              | Custom object to be serialized and attached as `customLog.txt`.            |
-| `iconOffset`                | `{ x: number; y: number }`        | `{ x: 45, y: 65 }`       | Position offset of the bug icon from the bottom-right corner.              |
-| `onSubmit`                  | `(message, screenshot?) => void`  | `undefined`              | Custom function to call after the user submits a message.                  |
-| `sendEmailOverrideFunction` | `(rawEmail) => Promise<void>`     | `undefined`              | Optional function to override the default email-sending behavior.          |
+<details>
+<summary><strong>Click to expand props table</strong></summary>
+
+<div style="overflow-x: auto; font-size: 13px;">
+
+<!-- BEGIN TABLE -->
+<table>
+  <thead>
+    <tr>
+      <th>Prop</th>
+      <th>Type</th>
+      <th>Default</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>customIcon</code></td>
+      <td><code>string</code></td>
+      <td><code>undefined</code></td>
+      <td>Custom image for the bug icon (base64 string or URL).</td>
+    </tr>
+    <tr>
+      <td><code>iconAlt</code></td>
+      <td><code>string</code></td>
+      <td><code>"Bug Icon"</code></td>
+      <td>Alt text for accessibility.</td>
+    </tr>
+    <tr>
+      <td><code>darkMode</code></td>
+      <td><code>boolean</code></td>
+      <td><code>false</code></td>
+      <td>Enables dark mode styling.</td>
+    </tr>
+    <tr>
+      <td><code>reporterInfo</code></td>
+      <td><code>any</code></td>
+      <td><code>undefined</code></td>
+      <td>Extra info to include in the email (e.g. user ID, session ID).</td>
+    </tr>
+    <tr>
+      <td><code>supportInbox</code></td>
+      <td><code>string</code></td>
+      <td><code>undefined</code></td>
+      <td>Email address to send bug reports to.</td>
+    </tr>
+    <tr>
+      <td><code>appName</code></td>
+      <td><code>string</code></td>
+      <td><code>undefined</code></td>
+      <td>Application name (used in email subject).</td>
+    </tr>
+    <tr>
+      <td><code>subjectPrefix</code></td>
+      <td><code>string</code></td>
+      <td><code>"JuneBug Report"</code></td>
+      <td>Custom prefix for the email subject line.</td>
+    </tr>
+    <tr>
+      <td><code>disableEmailer</code></td>
+      <td><code>boolean</code></td>
+      <td><code>false</code></td>
+      <td>Disables the built-in email sending system.</td>
+    </tr>
+    <tr>
+      <td><code>disableConsoleLogs</code></td>
+      <td><code>boolean</code></td>
+      <td><code>false</code></td>
+      <td>Prevents log collection from the console.</td>
+    </tr>
+    <tr>
+      <td><code>disableScreenshot</code></td>
+      <td><code>boolean</code></td>
+      <td><code>false</code></td>
+      <td>Disables screenshot functionality.</td>
+    </tr>
+    <tr>
+      <td><code>visible</code></td>
+      <td><code>boolean</code></td>
+      <td><code>true</code></td>
+      <td>If false, completely hides the component.</td>
+    </tr>
+    <tr>
+      <td><code>customLogObject</code></td>
+      <td><code>any</code></td>
+      <td><code>undefined</code></td>
+      <td>Object to attach as a customLog.txt file.</td>
+    </tr>
+    <tr>
+      <td><code>iconOffset</code></td>
+      <td><code>{ x: number; y: number }</code></td>
+      <td><code>{ x: 45, y: 65 }</code></td>
+      <td>Position offset from bottom-right of screen.</td>
+    </tr>
+    <tr>
+      <td><code>onSubmit</code></td>
+      <td><code>(message, screenshot?) => void</code></td>
+      <td><code>undefined</code></td>
+      <td>Callback after submit is clicked.</td>
+    </tr>
+    <tr>
+      <td><code>sendEmailOverrideFunction</code></td>
+      <td><code>(rawEmail) => Promise&lt;void&gt;</code></td>
+      <td><code>undefined</code></td>
+      <td>Custom email handler if not using built-in sender.</td>
+    </tr>
+  </tbody>
+</table>
+<!-- END TABLE -->
+
+</div>
+</details>
+
+---
 
 ### Example Usage
 
 ```tsx
 import { JuneBug } from "junebug";
 
-<JuneBug
-  customIcon="data:image/png;base64,...yourBase64IconHere..."
-  iconAlt="Custom Bug Icon"
-  darkMode={true}
-  reporterInfo={{ userId: "myUsername", sessionId: "123456789", userEmail: "email@user.com" }}
-  supportInbox="support@myapp.com"
-  appName="MyApp"
-  subjectPrefix="Special Bug Report"
-  disableEmailer={false}
-  disableConsoleLogs={false}
-  disableScreenshot={false}
-  visible={true}
-  customLogObject={{ browser: "Chrome", version: "123.0.0", isSpecialButtonPressed: "true" }}
-  iconOffset={{ x: 60, y: 80 }}
-  onSubmit={(message, screenshot) => {
-    console.log("User said:", message);
-    if (screenshot) {
-      console.log("Screenshot data:", screenshot.slice(0, 50) + "...");
-    }
-  }}
-  sendEmailOverrideFunction={async (rawEmail) => {
-    await fetch("https://my-api.com/send", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ rawEmail }),
-    });
-  }}
-/>
+    <div>
+      <h1>JuneBug Test</h1>
+        <JuneBug
+          customIcon="data:image/png;base64,...yourBase64IconHere..."
+          iconAlt="Custom Bug Icon Alt Text"
+          darkMode={true}
+          reporterInfo={{ userId: "myUsername", sessionId: "123456789", userEmail: "email@user.com" }}
+          supportInbox="support@myapp.com"
+          appName="MyApp"
+          subjectPrefix="Special Bug Report"
+          disableEmailer={false}
+          disableConsoleLogs={false}
+          disableScreenshot={false}
+          visible={true}
+          customLogObject={{ browser: "Chrome", version: "123.0.0", isSpecialButtonPressed: "true" }}
+          iconOffset={{ x: 60, y: 80 }}
+          onSubmit={(message, screenshot) => {
+            console.log("User said:", message);
+            if (screenshot) {
+              console.log("Screenshot data:", screenshot.slice(0, 50) + "...");
+            }
+          }}
+          sendEmailOverrideFunction={async (rawEmail) => {
+            await fetch("https://my-api.com/send", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ rawEmail }),
+            });
+          }}
+        />
+    </div>
+
+```
 
 ---
 

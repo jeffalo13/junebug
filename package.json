@@ -1,6 +1,6 @@
 {
   "name": "junebug",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "A simple, user-friendly, drag-and-drop bug reporting widget with screenshots and email support.",
   "author": "Jeffrey Antetomaso",
   "main": "dist/index.js",
