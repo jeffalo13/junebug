@@ -50,7 +50,7 @@ export interface JuneBugProps {
   /** Custom function to call after submit clicked */
   onSubmit?: (message: string, screenshotData?: string | null) => void;
 
-  /** Override the default email sending function */
+  /** Override the default email sending function.  Raw e-mail text will still be automatically generated and then passed to your function instead of default emailer. */
   sendEmailOverrideFunction?: (rawEmail: string) => Promise<void>;
 }
 
