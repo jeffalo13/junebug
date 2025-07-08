@@ -161,6 +161,7 @@ export const JuneBug: React.FC<JuneBugProps> = ({
       // TOUCH EVENTS
     const handleTouchMove = (e: TouchEvent) => {
       if (!dragging) return;
+      e.preventDefault();
       const touch = e.touches[0];
       const deltaX = touch.clientX - dragStartMouse.current.x;
       const deltaY = touch.clientY - dragStartMouse.current.y;
