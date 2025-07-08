@@ -50,6 +50,47 @@ I created this with the hope that more people would actually report issues rathe
 
 ---
 
+### Example Usage
+
+```tsx
+import { JuneBug } from "junebug";
+
+    <div>
+      <h1>JuneBug Test</h1>
+        <JuneBug
+          customIcon="data:image/png;base64,...yourBase64IconHere..."
+          iconAlt="Custom Bug Icon Alt Text"
+          darkMode={true}
+          reporterInfo={{ userId: "myUsername", sessionId: "123456789", userEmail: "email@user.com" }}
+          supportInbox="support@myapp.com"
+          appName="MyApp"
+          subjectPrefix="Special Bug Report"
+          disableEmailer={false}
+          disableConsoleLogs={false}
+          disableScreenshot={false}
+          visible={true}
+          customLogObject={{ browser: "Chrome", version: "123.0.0", isSpecialButtonPressed: "true" }}
+          iconOffset={{ x: 60, y: 80 }}
+          onSubmit={(message, screenshot) => {
+            console.log("User said:", message);
+            if (screenshot) {
+              console.log("Screenshot data:", screenshot.slice(0, 50) + "...");
+            }
+          }}
+          sendEmailOverrideFunction={async (rawEmail) => {
+            await fetch("https://my-api.com/send", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ rawEmail }),
+            });
+          }}
+        />
+    </div>
+
+```
+
+---
+
 ### Props
 
 <details>
@@ -164,47 +205,6 @@ I created this with the hope that more people would actually report issues rathe
 
 </div>
 </details>
-
----
-
-### Example Usage
-
-```tsx
-import { JuneBug } from "junebug";
-
-    <div>
-      <h1>JuneBug Test</h1>
-        <JuneBug
-          customIcon="data:image/png;base64,...yourBase64IconHere..."
-          iconAlt="Custom Bug Icon Alt Text"
-          darkMode={true}
-          reporterInfo={{ userId: "myUsername", sessionId: "123456789", userEmail: "email@user.com" }}
-          supportInbox="support@myapp.com"
-          appName="MyApp"
-          subjectPrefix="Special Bug Report"
-          disableEmailer={false}
-          disableConsoleLogs={false}
-          disableScreenshot={false}
-          visible={true}
-          customLogObject={{ browser: "Chrome", version: "123.0.0", isSpecialButtonPressed: "true" }}
-          iconOffset={{ x: 60, y: 80 }}
-          onSubmit={(message, screenshot) => {
-            console.log("User said:", message);
-            if (screenshot) {
-              console.log("Screenshot data:", screenshot.slice(0, 50) + "...");
-            }
-          }}
-          sendEmailOverrideFunction={async (rawEmail) => {
-            await fetch("https://my-api.com/send", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ rawEmail }),
-            });
-          }}
-        />
-    </div>
-
-```
 
 ---
 
